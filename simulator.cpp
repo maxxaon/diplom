@@ -10,7 +10,7 @@ double Channel::get_transfer_time(double data_volume) const {
     return delay_ + (data_volume / 1000) / speed_;
 }
 
-Simulator::Simulator(int total_page_count, std::vector<PageAccess> access_history, Channel channel)
+Simulator::Simulator(size_t total_page_count, std::vector<PageAccess> access_history, Channel channel)
         : total_page_count_(total_page_count), access_history_(move(access_history)), channel_(channel) {
 
 }
@@ -89,7 +89,6 @@ IndexSegment get_index_segment_by_k(int page_number, double k) {
 
 Criterias Simulator::RunPostCopyMigration(bool optimization_flag) {
     double transmitted_data = 0;
-    double delays = 0;
     int miss_count = 0;
     std::unordered_set<int> already_sent_pages;
 
@@ -121,6 +120,7 @@ Criterias Simulator::RunPostCopyMigration(bool optimization_flag) {
                 delays_ += channel_.get_transfer_time(page_num_size_) + channel_.get_transfer_time(page_size_);
                 transmitted_data += page_num_size_ + page_size_;
                 cur_time_ += channel_.get_transfer_time(page_size_);
+                already_sent_pages.insert(accessed_page_number);
 
                 if (optimization_flag) {
                     segment_tree_opt->BulkAdd(
@@ -159,6 +159,7 @@ void Simulator::Clear() {
     for (int i = 0; i < total_page_count_; ++i) {
         pages_to_transfer_.push_back(i);
     }
+    std::random_shuffle(pages_to_transfer_.begin(), pages_to_transfer_.end());
     cur_time_ = 0;
     delays_ = 0;
 }

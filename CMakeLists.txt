@@ -3,4 +3,4 @@ project(diplom)
 
 set(CMAKE_CXX_STANDARD 17)
 
-add_executable(diplom main.cpp segment_tree.h simulator.h simulator.cpp segment_tree.cpp)
+add_executable(diplom main.cpp segment_tree.h simulator.h simulator.cpp segment_tree.cpp all.h parser.h)

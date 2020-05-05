@@ -13,7 +13,7 @@ enum class MigrationScheme {
 };
 
 struct PageAccess {
-    int page_number;
+    size_t page_number;
     Operation operation;
 };
 
@@ -37,7 +37,7 @@ private:
 
 class Simulator {
 public:
-    Simulator(int total_page_count, std::vector<PageAccess> access_history, Channel channel);
+    Simulator(size_t total_page_count, std::vector<PageAccess> access_history, Channel channel);
 
     Criterias RunMigration(MigrationScheme migration_scheme, bool optimization_flag);
 
@@ -70,7 +70,7 @@ private:
 
     const double page_size_ = 4; // KB
     const double page_num_size_ = 0.004; // KB
-    const double access_gap = 1e-6; // s
+    const double access_gap = 1e-7; // s
 };
 
 
