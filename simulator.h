@@ -70,7 +70,7 @@ private:
 
     const double page_size_ = 4; // KB
     const double page_num_size_ = 0.004; // KB
-    const double access_gap = 1e-7; // s
+    const double access_gap = 1e-6; // s
 };
 
 
