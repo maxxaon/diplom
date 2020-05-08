@@ -40,6 +40,8 @@ Criterias Simulator::RunPreCopyMigration(bool optimization_flag) {
                  [&change_number] (const int lhs, const int rhs) {
                      return change_number[lhs] < change_number[rhs];
                  });
+        } else {
+            std::sort(pages_to_transfer_.begin(), pages_to_transfer_.end());
         }
 
         std::unordered_set<int> next_pages_to_transfer;
