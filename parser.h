@@ -34,9 +34,16 @@ namespace Parser {
 
         std::sort(page_numbers.begin(), page_numbers.end());
         page_numbers.erase(std::unique(page_numbers.begin(), page_numbers.end()), page_numbers.end());
+
+        std::vector<size_t> order(page_numbers.size());
+        for (size_t i = 0; i < order.size(); ++i) {
+            order[i] = i;
+        }
+        std::random_shuffle(order.begin(), order.end());
+
         std::unordered_map<size_t, size_t> page_to_index;
         for (size_t i = 0; i < page_numbers.size(); ++i) {
-            page_to_index[page_numbers[i]] = i;
+            page_to_index[page_numbers[i]] = order[i];
         }
         for (auto& it : input_data.access_history) {
             it.page_number = page_to_index.at(it.page_number);

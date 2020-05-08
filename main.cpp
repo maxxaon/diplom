@@ -6,7 +6,7 @@ int main(int argc, char *argv[]) {
     std::ifstream in(argv[1]);
     auto input = Parser::parse_input_data(in);
 
-    Channel channel(10, 10);
+    Channel channel(10, 0.001);
     Simulator simulator(input.total_page_count, input.access_history, channel);
     MigrationScheme migration_scheme;
     bool optimization_flag;

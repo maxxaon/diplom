@@ -43,7 +43,7 @@ public:
 
 private:
     struct PreCopyStopParameters {
-        static const int max_iteration_count = 1000;
+        static const int max_iteration_count = 10;
         static constexpr double ok_leave_pages_part = 0.01;
     };
 
@@ -70,7 +70,7 @@ private:
 
     const double page_size_ = 4; // KB
     const double page_num_size_ = 0.004; // KB
-    const double access_gap = 1e-6; // s
+    const double access_gap = 1e-5; // s
 };
 
 

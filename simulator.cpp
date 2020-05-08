@@ -42,7 +42,7 @@ Criterias Simulator::RunPreCopyMigration(bool optimization_flag) {
                  });
         }
 
-        std::deque<int> next_pages_to_transfer;
+        std::unordered_set<int> next_pages_to_transfer;
         std::unordered_set<int> already_sent_pages;
 
         while (!pages_to_transfer_.empty()) {
@@ -59,13 +59,14 @@ Criterias Simulator::RunPreCopyMigration(bool optimization_flag) {
             // if we have access to a page after transferring, add it to next iteration
             while (auto accessed_page_number_opt = get_next_accessed_page_number(Operation::Write)) {
                 int accessed_page_number = *accessed_page_number_opt;
-                if (already_sent_pages.find(accessed_page_number) != already_sent_pages.end()) {
-                    next_pages_to_transfer.push_back(accessed_page_number);
+                if (already_sent_pages.find(accessed_page_number) != already_sent_pages.end()
+                        && next_pages_to_transfer.find(accessed_page_number) == next_pages_to_transfer.end()) {
+                    next_pages_to_transfer.insert(accessed_page_number);
                 }
             }
         }
 
-        pages_to_transfer_ = next_pages_to_transfer;
+        pages_to_transfer_ = std::deque<int>(next_pages_to_transfer.begin(), next_pages_to_transfer.end());
     }
 
     double data_volume = pages_to_transfer_.size() * page_size_;
@@ -159,7 +160,6 @@ void Simulator::Clear() {
     for (int i = 0; i < total_page_count_; ++i) {
         pages_to_transfer_.push_back(i);
     }
-    std::random_shuffle(pages_to_transfer_.begin(), pages_to_transfer_.end());
     cur_time_ = 0;
     delays_ = 0;
 }
