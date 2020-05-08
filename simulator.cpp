@@ -3,6 +3,7 @@
 
 #include <algorithm>
 #include <unordered_set>
+#include <iostream>
 
 Channel::Channel(double speed, double delay) : speed_(speed), delay_(delay) {}
 
@@ -34,6 +35,7 @@ Criterias Simulator::RunPreCopyMigration(bool optimization_flag) {
            && 1.0 * pages_to_transfer_.size() / total_page_count_
               > PreCopyStopParameters::ok_leave_pages_part) {
         // start iteration
+        iteration_number++;
 
         if (optimization_flag) {
             std::sort(pages_to_transfer_.begin(), pages_to_transfer_.end(),
@@ -70,6 +72,8 @@ Criterias Simulator::RunPreCopyMigration(bool optimization_flag) {
 
         pages_to_transfer_ = std::deque<int>(next_pages_to_transfer.begin(), next_pages_to_transfer.end());
     }
+
+    std::cout << "iterations: " << iteration_number << '\n';
 
     double data_volume = pages_to_transfer_.size() * page_size_;
     pages_to_transfer_.clear();
